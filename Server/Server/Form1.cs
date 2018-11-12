@@ -48,10 +48,11 @@ namespace TCPIPDemo
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (server.IsStarted)
-            {
-                server.Stop();
-            }
+            CommonLibrary.TcpClass.StopService(server);
+            //if (server.IsStarted)
+            //{
+            //    server.Stop();
+            //}
         }
     }
 }

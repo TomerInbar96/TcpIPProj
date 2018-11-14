@@ -27,7 +27,6 @@ namespace TCPIPDemo
             server.Delimiter = 0x13;
             server.StringEncoder = Encoding.UTF8;
             server.DataReceived += Server_DataReceived;
-            
         }
 
         private void Server_DataReceived(object sender, SimpleTCP.Message e)
@@ -53,6 +52,18 @@ namespace TCPIPDemo
             //{
             //    server.Stop();
             //}
+        }
+
+        private void btnGetFile_Click(object sender, EventArgs e)
+        {
+            string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
+            CommonLibrary.TcpClass.ServerReceiveFile(Convert.ToInt32(txtPort.Text), Path);
+        }
+
+        private void btnFileReply_Click(object sender, EventArgs e)
+        {
+            string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
+            CommonLibrary.TcpClass.HandleFileRequest(Convert.ToInt32(txtPort.Text), Path);
         }
     }
 }

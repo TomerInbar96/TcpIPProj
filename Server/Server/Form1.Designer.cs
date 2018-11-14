@@ -35,6 +35,8 @@
             this.txtHost = new System.Windows.Forms.TextBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.txtStatus = new System.Windows.Forms.TextBox();
+            this.btnGetFile = new System.Windows.Forms.Button();
+            this.btnFileReply = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
@@ -99,11 +101,33 @@
             this.txtStatus.Size = new System.Drawing.Size(297, 104);
             this.txtStatus.TabIndex = 8;
             // 
+            // btnGetFile
+            // 
+            this.btnGetFile.Location = new System.Drawing.Point(426, 91);
+            this.btnGetFile.Name = "btnGetFile";
+            this.btnGetFile.Size = new System.Drawing.Size(103, 23);
+            this.btnGetFile.TabIndex = 9;
+            this.btnGetFile.Text = "Get File";
+            this.btnGetFile.UseVisualStyleBackColor = true;
+            this.btnGetFile.Click += new System.EventHandler(this.btnGetFile_Click);
+            // 
+            // btnFileReply
+            // 
+            this.btnFileReply.Location = new System.Drawing.Point(426, 120);
+            this.btnFileReply.Name = "btnFileReply";
+            this.btnFileReply.Size = new System.Drawing.Size(103, 33);
+            this.btnFileReply.TabIndex = 10;
+            this.btnFileReply.Text = "File reply";
+            this.btnFileReply.UseVisualStyleBackColor = true;
+            this.btnFileReply.Click += new System.EventHandler(this.btnFileReply_Click);
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(541, 177);
+            this.Controls.Add(this.btnFileReply);
+            this.Controls.Add(this.btnGetFile);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.label2);
@@ -129,6 +153,8 @@
         private System.Windows.Forms.TextBox txtHost;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.Button btnGetFile;
+        private System.Windows.Forms.Button btnFileReply;
     }
 }
 

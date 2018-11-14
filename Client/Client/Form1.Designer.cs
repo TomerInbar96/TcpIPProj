@@ -36,6 +36,9 @@
             this.txtStatus = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.SendFile = new System.Windows.Forms.Button();
+            this.AskFile = new System.Windows.Forms.Button();
+            this.btnDeleteFile = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -92,7 +95,7 @@
             // 
             this.btnSend.Location = new System.Drawing.Point(372, 137);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSend.Size = new System.Drawing.Size(87, 23);
             this.btnSend.TabIndex = 13;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -108,11 +111,44 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // SendFile
+            // 
+            this.SendFile.Location = new System.Drawing.Point(372, 166);
+            this.SendFile.Name = "SendFile";
+            this.SendFile.Size = new System.Drawing.Size(87, 23);
+            this.SendFile.TabIndex = 15;
+            this.SendFile.Text = "Send File";
+            this.SendFile.UseVisualStyleBackColor = true;
+            this.SendFile.Click += new System.EventHandler(this.SendFile_Click);
+            // 
+            // AskFile
+            // 
+            this.AskFile.Location = new System.Drawing.Point(372, 195);
+            this.AskFile.Name = "AskFile";
+            this.AskFile.Size = new System.Drawing.Size(87, 23);
+            this.AskFile.TabIndex = 16;
+            this.AskFile.Text = "Ask File";
+            this.AskFile.UseVisualStyleBackColor = true;
+            this.AskFile.Click += new System.EventHandler(this.AskFile_Click);
+            // 
+            // btnDeleteFile
+            // 
+            this.btnDeleteFile.Location = new System.Drawing.Point(373, 224);
+            this.btnDeleteFile.Name = "btnDeleteFile";
+            this.btnDeleteFile.Size = new System.Drawing.Size(87, 23);
+            this.btnDeleteFile.TabIndex = 17;
+            this.btnDeleteFile.Text = "del File";
+            this.btnDeleteFile.UseVisualStyleBackColor = true;
+            this.btnDeleteFile.Click += new System.EventHandler(this.btnDeleteFile_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(460, 280);
+            this.ClientSize = new System.Drawing.Size(496, 280);
+            this.Controls.Add(this.btnDeleteFile);
+            this.Controls.Add(this.AskFile);
+            this.Controls.Add(this.SendFile);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtStatus);
@@ -140,6 +176,9 @@
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Button SendFile;
+        private System.Windows.Forms.Button AskFile;
+        private System.Windows.Forms.Button btnDeleteFile;
     }
 }
 

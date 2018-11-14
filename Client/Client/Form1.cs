@@ -45,5 +45,23 @@ namespace Client
         {
             client.WriteLineAndGetReply(txtMessage.Text, TimeSpan.FromSeconds(3));
         }
+
+        private void SendFile_Click(object sender, EventArgs e)
+        {
+            string filePath = @"C:\Users\guy\Desktop\FileToSendFromServer\OpenNotepad++.bat";
+            CommonLibrary.TcpClass.ClientSendFile(filePath, txtHost.Text, Convert.ToInt32(txtPort.Text));
+        }
+
+        private void AskFile_Click(object sender, EventArgs e)
+        {
+            string filePath = @"C:\Users\guy\Desktop\FileToSendFromServer\OpenNotepad++.bat";
+            CommonLibrary.TcpClass.AskFileFromServer(filePath, txtHost.Text, Convert.ToInt32(txtPort.Text));
+        }
+
+        private void btnDeleteFile_Click(object sender, EventArgs e)
+        {
+            string filePath = @"C:\Users\guy\Desktop\FileToSendFromServer\OpenNotepad++.bat";
+            CommonLibrary.TcpClass.deleteFile(filePath);
+        }
     }
 }

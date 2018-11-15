@@ -63,7 +63,7 @@ namespace TCPIPDemo
         private void btnFileReply_Click(object sender, EventArgs e)
         {
             string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
-            CommonLibrary.TcpClass.HandleFileRequest(Convert.ToInt32(txtPort.Text), Path);
+            CommonLibrary.TcpClass.HandleServerRequest(Convert.ToInt32(txtPort.Text));
         }
     }
 }

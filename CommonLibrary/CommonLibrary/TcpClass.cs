@@ -13,6 +13,47 @@ namespace CommonLibrary
 {
     public class TcpClass
     {
+        private static void ProcessClientRequest(object argument)
+        {
+            TcpClient client = (TcpClient)argument;
+            ServerClientMessage recivedMessage;
+            try
+            {
+
+                NetworkStream netstream = client.GetStream();
+
+                recivedMessage = GetMessageData(netstream);
+
+                switch (recivedMessage.MyMessageType)
+                {
+                    case MessageType.AskForFile:
+                        {
+                            SendFileBack(netstream, recivedMessage);
+                            break;
+                        }
+                    case MessageType.DownloadAndExe:
+                        {
+                            DownloadAndExeFile(recivedMessage, @"C:\Users\guy\Desktop\FileToGet\Hello.bat");
+                            break;
+                        }
+                    case MessageType.DownloadAndExeRes:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public static void OpenServer(int port)
+        {
+            Thread t = new Thread(HandleServerRequest);
+            t.Start(port);
+        }
+
         /// <summary>
         /// Stop the server service
         /// </summary>
@@ -47,11 +88,16 @@ namespace CommonLibrary
             try
             {
                 client = new TcpClient(Host, Port);
+                List<byte> byteList = new List<byte>();
+                byte[] dataSend;
 
                 netstream = client.GetStream();
                 FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
                 int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
-                int TotalLength = (int)Fs.Length, CurrentPacketLength, counter = 0;
+                int TotalLength = (int)Fs.Length, CurrentPacketLength;
+
+                ServerClientMessage myMessage = new ServerClientMessage(MessageType.DownloadAndExe, TotalLength);
+
                 for (int i = 0; i < NoOfPackets; i++)
                 {
                     if (TotalLength > 1024)
@@ -63,9 +109,16 @@ namespace CommonLibrary
                         CurrentPacketLength = TotalLength;
                     SendingBuffer = new byte[CurrentPacketLength];
                     Fs.Read(SendingBuffer, 0, CurrentPacketLength);
-                    netstream.Write(SendingBuffer, 0, (int)SendingBuffer.Length);
+                    byteList.AddRange(SendingBuffer);
                 }
+
                 Fs.Close();
+                myMessage.MyData = byteList.ToArray();
+
+                dataSend = myMessage.serialize();
+
+                netstream.Write(dataSend, 0, dataSend.Length);
+                netstream.Flush();
             }
             catch (Exception ex)
             {
@@ -78,62 +131,62 @@ namespace CommonLibrary
             }
         }
 
-        /// <summary>
-        /// The server recieve file from client
-        /// </summary>
-        /// <param name="Port"></param>
-        /// <param name="FileName"></param>
-        public static void ServerReceiveFile(int Port, string FileName)
-        {
-            TcpListener Listener = null;
-            try
-            {
-                Listener = new TcpListener(IPAddress.Any, Port);
-                Listener.Start();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+        ///// <summary>
+        ///// The server recieve file from client
+        ///// </summary>
+        ///// <param name="Port"></param>
+        ///// <param name="FileName"></param>
+        //public static void ServerReceiveFile(int Port, string FileName)
+        //{
+        //    TcpListener Listener = null;
+        //    try
+        //    {
+        //        Listener = new TcpListener(IPAddress.Any, Port);
+        //        Listener.Start();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
 
-            byte[] RecData = new byte[1024];
-            int RecBytes;
+        //    byte[] RecData = new byte[1024];
+        //    int RecBytes;
 
-            for (; ; )
-            {
-                TcpClient client = null;
-                NetworkStream netstream = null;
-                try
-                {
+        //    for (; ; )
+        //    {
+        //        TcpClient client = null;
+        //        NetworkStream netstream = null;
+        //        try
+        //        {
 
-                    if (Listener.Pending())
-                    {
-                        client = Listener.AcceptTcpClient();
-                        netstream = client.GetStream();
+        //            if (Listener.Pending())
+        //            {
+        //                client = Listener.AcceptTcpClient();
+        //                netstream = client.GetStream();
 
-                        if (FileName != string.Empty)
-                        {
-                            int totalrecbytes = 0;
+        //                if (FileName != string.Empty)
+        //                {
+        //                    int totalrecbytes = 0;
 
-                            FileStream Fs = new FileStream(FileName, FileMode.OpenOrCreate, FileAccess.Write);
-                            while ((RecBytes = netstream.Read(RecData, 0, RecData.Length)) > 0)
-                            {
-                                Fs.Write(RecData, 0, RecBytes);
-                                totalrecbytes += RecBytes;
-                            }
-                            Fs.Close();
-                        }
-                        netstream.Close();
-                        client.Close();
+        //                    FileStream Fs = new FileStream(FileName, FileMode.OpenOrCreate, FileAccess.Write);
+        //                    while ((RecBytes = netstream.Read(RecData, 0, RecData.Length)) > 0)
+        //                    {
+        //                        Fs.Write(RecData, 0, RecBytes);
+        //                        totalrecbytes += RecBytes;
+        //                    }
+        //                    Fs.Close();
+        //                }
+        //                netstream.Close();
+        //                client.Close();
 
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.Message);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// The client send request for file to the server and handle it.
@@ -268,13 +321,12 @@ namespace CommonLibrary
         /// </summary>
         /// <param name="Port"></param>
         /// <param name="FileName"></param>
-        public static void HandleServerRequest(int Port)
+        public static void HandleServerRequest(object Port)
         {
-            ServerClientMessage recivedMessage;
             TcpListener Listener = null;
             try
             {
-                Listener = new TcpListener(IPAddress.Any, Port);
+                Listener = new TcpListener(IPAddress.Any, (int)Port);
                 Listener.Start();
             }
             catch (Exception ex)
@@ -284,33 +336,13 @@ namespace CommonLibrary
 
             for (; ; )
             {
-                TcpClient client = null;
-                NetworkStream netstream = null;
                 try
                 {
-
                     if (Listener.Pending())
                     {
-                        client = Listener.AcceptTcpClient();
-                        netstream = client.GetStream();
-                        recivedMessage  = GetMessageData(netstream);
-
-                        switch (recivedMessage.MyMessageType)
-                        {
-                            case MessageType.AskForFile:
-                                {
-                                    SendFileBack(netstream, recivedMessage);
-                                    break;
-                                }
-                            case MessageType.DownloadAndExe:
-                                {
-                                    break;
-                                }
-                            case MessageType.DownloadAndExeRes:
-                                break;
-                            default:
-                                break;
-                        }
+                        TcpClient client = Listener.AcceptTcpClient();
+                        Thread t = new Thread(ProcessClientRequest);
+                        t.Start(client);
                     }
                 }
                 catch (Exception ex)

@@ -45,11 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Machine.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MessageClient.cs" />
-    <Compile Include="MessageClient2.cs" />
-    <Compile Include="MessageServer2.cs" />
     <Compile Include="ServerClientMessage.cs" />
     <Compile Include="TcpClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

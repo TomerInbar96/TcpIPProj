@@ -20,12 +20,6 @@ namespace Client
 
         SimpleTcpClient client; 
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            client.Connect(txtHost.Text, Convert.ToInt32(txtPort.Text));
-            btnConnect.Enabled = false; 
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             client = new SimpleTcpClient();

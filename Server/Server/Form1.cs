@@ -18,7 +18,7 @@ namespace TCPIPDemo
         {
             InitializeComponent();
         }
-
+        
         SimpleTcpServer server;
 
         private void Server_Load(object sender, EventArgs e)
@@ -54,16 +54,11 @@ namespace TCPIPDemo
             //}
         }
 
-        private void btnGetFile_Click(object sender, EventArgs e)
-        {
-            string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
-            CommonLibrary.TcpClass.ServerReceiveFile(Convert.ToInt32(txtPort.Text), Path);
-        }
-
         private void btnFileReply_Click(object sender, EventArgs e)
         {
             string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
-            CommonLibrary.TcpClass.HandleServerRequest(Convert.ToInt32(txtPort.Text));
+            CommonLibrary.TcpClass.OpenServer(Convert.ToInt32(txtPort.Text));
+            btnOpenServer.Enabled = false;
         }
     }
 }

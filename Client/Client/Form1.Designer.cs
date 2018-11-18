@@ -34,8 +34,6 @@
             this.txtPort = new System.Windows.Forms.TextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtStatus = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.SendFile = new System.Windows.Forms.Button();
             this.AskFile = new System.Windows.Forms.Button();
             this.btnDeleteFile = new System.Windows.Forms.Button();
@@ -91,26 +89,6 @@
             this.txtStatus.Size = new System.Drawing.Size(253, 46);
             this.txtStatus.TabIndex = 12;
             // 
-            // btnSend
-            // 
-            this.btnSend.Location = new System.Drawing.Point(372, 137);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(87, 23);
-            this.btnSend.TabIndex = 13;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(372, 58);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(75, 23);
-            this.btnConnect.TabIndex = 14;
-            this.btnConnect.Text = "Connect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
-            // 
             // SendFile
             // 
             this.SendFile.Location = new System.Drawing.Point(372, 166);
@@ -149,8 +127,6 @@
             this.Controls.Add(this.btnDeleteFile);
             this.Controls.Add(this.AskFile);
             this.Controls.Add(this.SendFile);
-            this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.label2);
@@ -174,8 +150,6 @@
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.TextBox txtStatus;
-        private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button SendFile;
         private System.Windows.Forms.Button AskFile;
         private System.Windows.Forms.Button btnDeleteFile;

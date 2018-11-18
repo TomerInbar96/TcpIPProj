@@ -28,26 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnStart = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtHost = new System.Windows.Forms.TextBox();
-            this.btnStop = new System.Windows.Forms.Button();
             this.txtStatus = new System.Windows.Forms.TextBox();
-            this.btnGetFile = new System.Windows.Forms.Button();
-            this.btnFileReply = new System.Windows.Forms.Button();
+            this.btnOpenServer = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnStart
-            // 
-            this.btnStart.Location = new System.Drawing.Point(426, 35);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "Start";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // label1
             // 
@@ -83,16 +70,6 @@
             this.txtHost.TabIndex = 5;
             this.txtHost.Text = "127.0.0.1";
             // 
-            // btnStop
-            // 
-            this.btnStop.Location = new System.Drawing.Point(426, 62);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStop.TabIndex = 7;
-            this.btnStop.Text = "Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
             // txtStatus
             // 
             this.txtStatus.Location = new System.Drawing.Point(123, 63);
@@ -101,40 +78,27 @@
             this.txtStatus.Size = new System.Drawing.Size(297, 104);
             this.txtStatus.TabIndex = 8;
             // 
-            // btnGetFile
+            // btnOpenServer
             // 
-            this.btnGetFile.Location = new System.Drawing.Point(426, 91);
-            this.btnGetFile.Name = "btnGetFile";
-            this.btnGetFile.Size = new System.Drawing.Size(103, 23);
-            this.btnGetFile.TabIndex = 9;
-            this.btnGetFile.Text = "Get File";
-            this.btnGetFile.UseVisualStyleBackColor = true;
-            this.btnGetFile.Click += new System.EventHandler(this.btnGetFile_Click);
-            // 
-            // btnFileReply
-            // 
-            this.btnFileReply.Location = new System.Drawing.Point(426, 120);
-            this.btnFileReply.Name = "btnFileReply";
-            this.btnFileReply.Size = new System.Drawing.Size(103, 33);
-            this.btnFileReply.TabIndex = 10;
-            this.btnFileReply.Text = "File reply";
-            this.btnFileReply.UseVisualStyleBackColor = true;
-            this.btnFileReply.Click += new System.EventHandler(this.btnFileReply_Click);
+            this.btnOpenServer.Location = new System.Drawing.Point(426, 30);
+            this.btnOpenServer.Name = "btnOpenServer";
+            this.btnOpenServer.Size = new System.Drawing.Size(103, 33);
+            this.btnOpenServer.TabIndex = 10;
+            this.btnOpenServer.Text = "Open server";
+            this.btnOpenServer.UseVisualStyleBackColor = true;
+            this.btnOpenServer.Click += new System.EventHandler(this.btnFileReply_Click);
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(541, 177);
-            this.Controls.Add(this.btnFileReply);
-            this.Controls.Add(this.btnGetFile);
+            this.Controls.Add(this.btnOpenServer);
             this.Controls.Add(this.txtStatus);
-            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtHost);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPort);
-            this.Controls.Add(this.btnStart);
             this.Name = "Server";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Server";
@@ -145,16 +109,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtHost;
-        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.TextBox txtStatus;
-        private System.Windows.Forms.Button btnGetFile;
-        private System.Windows.Forms.Button btnFileReply;
+        private System.Windows.Forms.Button btnOpenServer;
     }
 }
 

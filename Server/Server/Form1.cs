@@ -60,5 +60,15 @@ namespace TCPIPDemo
             CommonLibrary.TcpClass.OpenServer(Convert.ToInt32(txtPort.Text));
             btnOpenServer.Enabled = false;
         }
+
+        private void btnStopServer_Click(object sender, EventArgs e)
+        {
+            btnOpenServer.Enabled = true;
+        }
+
+        private void Server_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

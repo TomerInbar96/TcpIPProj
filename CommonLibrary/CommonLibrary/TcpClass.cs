@@ -221,7 +221,12 @@ namespace CommonLibrary
             {
                 byte[] dataSend;
                 List<byte> byteList = new List<byte>();
-                string FileName = Encoding.ASCII.GetString(myMessage.MyData);
+
+                string FileName = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
+
+                // If I want to get the file path from my client.
+                //string FileName = Encoding.ASCII.GetString(myMessage.MyData);
+
                 FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
                 int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
                 int FileLength = (int)Fs.Length, CurrentPacketLength;
@@ -245,8 +250,8 @@ namespace CommonLibrary
 
                 Fs.Close();
 
-                myMessage.MyData = byteList.ToArray();
-                dataSend = myMessage.serialize();
+                myReply.MyData = byteList.ToArray();
+                dataSend = myReply.serialize();
                 netStream.Write(dataSend, 0, dataSend.Length);
                 netStream.Flush();
             }

@@ -54,11 +54,11 @@ namespace TCPIPDemo
             //}
         }
 
-        private void btnFileReply_Click(object sender, EventArgs e)
+        private async void btnFileReply_Click(object sender, EventArgs e)
         {
             string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
-            CommonLibrary.TcpClass.OpenServer(Convert.ToInt32(txtPort.Text));
             btnOpenServer.Enabled = false;
+            await CommonLibrary.TcpClass.OpenServer(Convert.ToInt32(txtPort.Text));   
         }
 
         private void btnStopServer_Click(object sender, EventArgs e)
@@ -68,7 +68,7 @@ namespace TCPIPDemo
 
         private void Server_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Environment.Exit(0);
+            //Environment.Exit(0);
         }
     }
 }

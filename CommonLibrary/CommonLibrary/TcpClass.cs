@@ -403,7 +403,7 @@ namespace CommonLibrary
             }
         }
         
-        private static async Task<ServerClientMessage> GetMessageData(NetworkStream netStream)
+        public static async Task<ServerClientMessage> GetMessageData(NetworkStream netStream)
         {
             List<byte> bytelist = new List<byte>();
             int Datasize = 0;

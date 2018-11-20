@@ -36,6 +36,9 @@
     <Reference Include="CommonLibrary">
       <HintPath>..\..\CommonLibrary\CommonLibrary\bin\Debug\CommonLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="ServerLibrary">
+      <HintPath>..\..\ServerLibrary\ServerLibrary\bin\Debug\ServerLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleTCP, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SimpleTCP.1.0.24\lib\net45\SimpleTCP.dll</HintPath>

@@ -34,6 +34,7 @@
             this.txtHost = new System.Windows.Forms.TextBox();
             this.txtStatus = new System.Windows.Forms.TextBox();
             this.btnOpenServer = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -88,11 +89,22 @@
             this.btnOpenServer.UseVisualStyleBackColor = true;
             this.btnOpenServer.Click += new System.EventHandler(this.btnFileReply_Click);
             // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(426, 69);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(103, 29);
+            this.btnClose.TabIndex = 11;
+            this.btnClose.Text = "Close Server";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(541, 177);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnOpenServer);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.label2);
@@ -116,6 +128,7 @@
         private System.Windows.Forms.TextBox txtHost;
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Button btnOpenServer;
+        private System.Windows.Forms.Button btnClose;
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using SimpleTCP;
+﻿using ServerLibrary;
+using SimpleTCP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,16 +15,19 @@ namespace TCPIPDemo
 {
     public partial class Server : Form
     {
+        
         public Server()
         {
             InitializeComponent();
         }
         
         SimpleTcpServer server;
+        ServerTcp serverTcp;
 
         private void Server_Load(object sender, EventArgs e)
         {
             server = new SimpleTcpServer();
+            serverTcp = new ServerTcp();
             server.Delimiter = 0x13;
             server.StringEncoder = Encoding.UTF8;
             server.DataReceived += Server_DataReceived;
@@ -58,17 +62,23 @@ namespace TCPIPDemo
         {
             string Path = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
             btnOpenServer.Enabled = false;
-            await CommonLibrary.TcpClass.OpenServer(Convert.ToInt32(txtPort.Text));   
+            await this.serverTcp.StartServiceAsync(Convert.ToInt32(txtPort.Text));   
         }
 
         private void btnStopServer_Click(object sender, EventArgs e)
         {
-            btnOpenServer.Enabled = true;
+            
         }
 
         private void Server_FormClosed(object sender, FormClosedEventArgs e)
         {
             //Environment.Exit(0);
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.serverTcp.stopService();
+            btnOpenServer.Enabled = true;
         }
     }
 }

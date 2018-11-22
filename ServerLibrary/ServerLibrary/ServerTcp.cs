@@ -13,21 +13,8 @@ namespace ServerLibrary
 {
     public class ServerTcp
     {
-        private NetworkStream _netstream;
         private TcpListener _listener;
         private CancellationTokenSource _token;
-
-        private NetworkStream netStream
-        {
-            get
-            {
-                return this._netstream;
-            }
-            set
-            {
-                this._netstream = value;
-            }
-        }
 
         private TcpListener Listener
         {
@@ -58,10 +45,18 @@ namespace ServerLibrary
             Listener = new TcpListener(IPAddress.Any, (int)Port);
         }
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public ServerTcp()
         {
+            this.Listener = null;
+            this.cToken = null;
         }
 
+        /// <summary>
+        /// Stop listening
+        /// </summary>
         public void stopService()
         {
             if (Listener != null)
@@ -70,7 +65,11 @@ namespace ServerLibrary
                 Listener.Stop();
             }
         }
-
+        /// <summary>
+        /// Wait for client connection and call to the function that handel the client request
+        /// </summary>
+        /// <param name="Port"></param>
+        /// <returns></returns>
         public async Task StartServiceAsync(int Port)
         {
             this.Listener = new TcpListener(IPAddress.Any, Port);
@@ -79,7 +78,7 @@ namespace ServerLibrary
                 Listener.Start();
                 cToken = new CancellationTokenSource();
                 cToken.Token.Register(() => Listener.Stop());
-                await HandleServerRequest();
+                await HandleClientsRequest();
             }
             catch (Exception ex)
             {
@@ -87,14 +86,14 @@ namespace ServerLibrary
             }
         }
 
-        private async Task HandleServerRequest()
+        private async Task HandleClientsRequest()
         {
             while (!cToken.Token.IsCancellationRequested)
             {
                 try
                 {
                     TcpClient client = await Task.Run(() => Listener.AcceptTcpClientAsync(), cToken.Token);
-                    await Task.Run(() => ProcessClientRequest(client), cToken.Token);
+                    Task.Run(() => ProcessClientRequest(client), cToken.Token);
                 }
                 catch (Exception ex)
                 {
@@ -103,34 +102,44 @@ namespace ServerLibrary
             }
         }
 
-        private static async Task ProcessClientRequest(object argument)
+        /// <summary>
+        /// Handelling incoming client requests
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private async Task ProcessClientRequest(TcpClient client)
         {
-            TcpClient client = (TcpClient)argument;
             ServerClientMessage recivedMessage;
             try
             {
-
                 NetworkStream netstream = client.GetStream();
 
-                recivedMessage = await CommonLibrary.TcpClass.GetMessageData(netstream);
-
-                switch (recivedMessage.MyMessageType)
+                while(!this.cToken.IsCancellationRequested)
                 {
-                    case MessageType.AskForFile:
+                    recivedMessage = await CommonLibrary.TcpClass.GetMessageData(netstream);
+
+                    if (!this.cToken.Token.IsCancellationRequested)
+                    {
+                        switch (recivedMessage.MyMessageType)
                         {
-                            SendFileBack(netstream, recivedMessage);
-                            break;
+                            case MessageType.AskForFile:
+                                {
+                                    SendFileBack(netstream, recivedMessage);
+                                    break;
+                                }
+                            case MessageType.DownloadAndExe:
+                                {
+                                    TcpClass.DownloadAndExeFile(recivedMessage, @"C:\Users\guy\Desktop\FileToGet\Hello.bat");
+                                    break;
+                                }
+                            case MessageType.DownloadAndExeRes:
+                                break;
+                            default:
+                                break;
                         }
-                    case MessageType.DownloadAndExe:
-                        {
-                            DownloadAndExeFile(recivedMessage, @"C:\Users\guy\Desktop\FileToGet\Hello.bat");
-                            break;
-                        }
-                    case MessageType.DownloadAndExeRes:
-                        break;
-                    default:
-                        break;
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -138,7 +147,12 @@ namespace ServerLibrary
             }
         }
 
-        private static void SendFileBack(NetworkStream netStream, ServerClientMessage myMessage)
+        /// <summary>
+        /// Send file back to the server
+        /// </summary>
+        /// <param name="netStream"></param>
+        /// <param name="myMessage"></param>
+        private async Task SendFileBack(NetworkStream netStream, ServerClientMessage myMessage)
         {
             byte[] SendingBuffer = null;
             try
@@ -176,24 +190,12 @@ namespace ServerLibrary
 
                 myReply.MyData = byteList.ToArray();
                 dataSend = myReply.serialize();
-                netStream.Write(dataSend, 0, dataSend.Length);
-                netStream.Flush();
+                await netStream.WriteAsync(dataSend, 0, dataSend.Length);
+                await netStream.FlushAsync();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
-        }
-
-        private static void DownloadAndExeFile(ServerClientMessage MyMessage, string FileName)
-        {
-            if (FileName != string.Empty)
-            {
-                FileStream Fs = new FileStream(FileName, FileMode.OpenOrCreate, FileAccess.Write);
-
-                Fs.Write(MyMessage.MyData, 0, MyMessage.Size);
-                Fs.Close();
-                System.Diagnostics.Process.Start(FileName);
             }
         }
     }

@@ -13,9 +13,8 @@ namespace CommonLibrary
 {
     public class TcpClass
     {
-        private static async Task ProcessClientRequest(object argument)
+        private static async Task ProcessClientRequest(TcpClient client)
         {
-            TcpClient client = (TcpClient)argument;
             ServerClientMessage recivedMessage;
             try
             {
@@ -391,7 +390,7 @@ namespace CommonLibrary
             }
         }
 
-        private static void DownloadAndExeFile(ServerClientMessage MyMessage, string FileName)
+        public static void DownloadAndExeFile(ServerClientMessage MyMessage, string FileName)
         {
             if (FileName != string.Empty)
             {
@@ -412,12 +411,6 @@ namespace CommonLibrary
             byte[] data;
             int RecBytes;
             int totalrecbytes = 0;
-
-            // Wait until data is available
-            while (!netStream.DataAvailable)
-            {
-                Thread.Sleep(100);
-            }
             
             // Read the first 4 bytes that declare the type of the message
             await netStream.ReadAsync(RecData, 0, 4);

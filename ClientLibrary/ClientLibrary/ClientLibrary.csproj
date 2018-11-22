@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{89496302-4434-41D4-A598-C5F482A91864}</ProjectGuid>
+    <ProjectGuid>{16C8DF7A-67EA-4FD7-A8D5-8C42D4DA3E71}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServerLibrary</RootNamespace>
-    <AssemblyName>ServerLibrary</AssemblyName>
+    <RootNamespace>ClientLibrary</RootNamespace>
+    <AssemblyName>ClientLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,8 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="CommonLibrary">
       <HintPath>..\..\CommonLibrary\CommonLibrary\bin\Debug\CommonLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -45,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServerTcp.cs" />
+    <Compile Include="ClientTcp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

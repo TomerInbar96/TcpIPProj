@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientLibrary">
+      <HintPath>..\..\ClientLibrary\ClientLibrary\bin\Debug\ClientLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="CommonLibrary">
       <HintPath>..\..\CommonLibrary\CommonLibrary\bin\Debug\CommonLibrary.dll</HintPath>
     </Reference>

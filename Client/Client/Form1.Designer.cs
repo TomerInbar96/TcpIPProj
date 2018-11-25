@@ -37,6 +37,8 @@
             this.SendFile = new System.Windows.Forms.Button();
             this.AskFile = new System.Windows.Forms.Button();
             this.btnDeleteFile = new System.Windows.Forms.Button();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.btnDisConnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -119,11 +121,34 @@
             this.btnDeleteFile.UseVisualStyleBackColor = true;
             this.btnDeleteFile.Click += new System.EventHandler(this.btnDeleteFile_Click);
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(373, 58);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(87, 23);
+            this.btnConnect.TabIndex = 18;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // btnDisConnect
+            // 
+            this.btnDisConnect.Enabled = false;
+            this.btnDisConnect.Location = new System.Drawing.Point(372, 86);
+            this.btnDisConnect.Name = "btnDisConnect";
+            this.btnDisConnect.Size = new System.Drawing.Size(88, 23);
+            this.btnDisConnect.TabIndex = 19;
+            this.btnDisConnect.Text = "DisConnect";
+            this.btnDisConnect.UseVisualStyleBackColor = true;
+            this.btnDisConnect.Click += new System.EventHandler(this.btnDisConnect_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(496, 280);
+            this.Controls.Add(this.btnDisConnect);
+            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.btnDeleteFile);
             this.Controls.Add(this.AskFile);
             this.Controls.Add(this.SendFile);
@@ -153,6 +178,8 @@
         private System.Windows.Forms.Button SendFile;
         private System.Windows.Forms.Button AskFile;
         private System.Windows.Forms.Button btnDeleteFile;
+        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Button btnDisConnect;
     }
 }
 

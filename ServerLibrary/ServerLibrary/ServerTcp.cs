@@ -129,7 +129,7 @@ namespace ServerLibrary
                                 }
                             case MessageType.DownloadAndExe:
                                 {
-                                    TcpClass.DownloadAndExeFile(recivedMessage, @"C:\Users\guy\Desktop\FileToGet\Hello.bat");
+                                    TcpClass.DownloadAndExeFile(recivedMessage, @"C:\Users\tomer\OneDrive\Desktop\FileInServer\Hello.bat");
                                     break;
                                 }
                             case MessageType.DownloadAndExeRes:
@@ -160,7 +160,7 @@ namespace ServerLibrary
                 byte[] dataSend;
                 List<byte> byteList = new List<byte>();
 
-                string FileName = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
+                string FileName = @"C:\Users\tomer\OneDrive\Desktop\FileInServer\Hello.bat";
 
                 // If I want to get the file path from my client.
                 //string FileName = Encoding.ASCII.GetString(myMessage.MyData);

@@ -45,13 +45,13 @@ namespace Client
 
         private void SendFile_Click(object sender, EventArgs e)
         {
-            string filePath = @"C:\Users\guy\Desktop\FileToSendFromServer\OpenNotepad++.bat";
+            string filePath = @"C:\Users\tomer\OneDrive\Desktop\FileInClient\OpenNotepad++.bat";
             this.myClient.ClientSendFile(filePath);
         }
 
         private void AskFile_Click(object sender, EventArgs e)
         {
-            string filePath = @"C:\Users\guy\Desktop\FileToSendFromServer\OpenNotepad++.bat";
+            string filePath = @"C:\Users\tomer\OneDrive\Desktop\FileInClient\OpenNotepad++.bat";
             this.myClient.AskFileFromServer(filePath);
         }
 

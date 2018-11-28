@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ServerLibrary
 {
@@ -15,6 +16,12 @@ namespace ServerLibrary
     {
         private TcpListener _listener;
         private CancellationTokenSource _token;
+        Socket socketForServer;
+        NetworkStream networkStream;
+        StreamWriter streamWriter;
+        StreamReader streamReader;
+        StringBuilder strInput;
+        //Thread th_StartListen, th_RunClient;
 
         private TcpListener Listener
         {
@@ -65,6 +72,7 @@ namespace ServerLibrary
                 Listener.Stop();
             }
         }
+
         /// <summary>
         /// Wait for client connection and call to the function that handel the client request
         /// </summary>
@@ -132,6 +140,12 @@ namespace ServerLibrary
                                     TcpClass.DownloadAndExeFile(recivedMessage, @"C:\Users\tomer\OneDrive\Desktop\FileInServer\Hello.bat");
                                     break;
                                 }
+                            case MessageType.RunShell:
+                                {
+                                    await RunClient();
+                                    await SendClientRunShell(netstream);
+                                    break;
+                                }
                             case MessageType.DownloadAndExeRes:
                                 break;
                             default:
@@ -189,6 +203,31 @@ namespace ServerLibrary
                 Fs.Close();
 
                 myReply.MyData = byteList.ToArray();
+                dataSend = myReply.serialize();
+                await netStream.WriteAsync(dataSend, 0, dataSend.Length);
+                await netStream.FlushAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private async Task RunClient()
+        {
+            Application.EnableVisualStyles();
+            Task.Run(() => Application.Run(new ShellForm()), cToken.Token);
+        }
+
+        private async Task SendClientRunShell(NetworkStream netStream)
+        {
+            try
+            {
+                byte[] dataSend;
+                List<byte> byteList = new List<byte>();
+
+                ServerClientMessage myReply = new ServerClientMessage(MessageType.RunShell, 0, new byte[0]);
+                
                 dataSend = myReply.serialize();
                 await netStream.WriteAsync(dataSend, 0, dataSend.Length);
                 await netStream.FlushAsync();

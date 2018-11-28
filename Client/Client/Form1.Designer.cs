@@ -39,63 +39,71 @@
             this.btnDeleteFile = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnDisConnect = new System.Windows.Forms.Button();
+            this.btnRunShell = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(66, 58);
+            this.label2.Location = new System.Drawing.Point(50, 47);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 17);
+            this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 10;
             this.label2.Text = "Host:";
             // 
             // txtHost
             // 
-            this.txtHost.Location = new System.Drawing.Point(113, 58);
+            this.txtHost.Location = new System.Drawing.Point(85, 47);
+            this.txtHost.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(100, 22);
+            this.txtHost.Size = new System.Drawing.Size(76, 20);
             this.txtHost.TabIndex = 9;
             this.txtHost.Text = "127.0.0.1";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(219, 58);
+            this.label1.Location = new System.Drawing.Point(164, 47);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 17);
+            this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 8;
             this.label1.Text = "Port:";
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(266, 58);
+            this.txtPort.Location = new System.Drawing.Point(200, 47);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(100, 22);
+            this.txtPort.Size = new System.Drawing.Size(76, 20);
             this.txtPort.TabIndex = 7;
             this.txtPort.Text = "8910";
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(113, 138);
+            this.txtMessage.Location = new System.Drawing.Point(85, 112);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(253, 126);
+            this.txtMessage.Size = new System.Drawing.Size(191, 103);
             this.txtMessage.TabIndex = 11;
             // 
             // txtStatus
             // 
-            this.txtStatus.Location = new System.Drawing.Point(113, 86);
+            this.txtStatus.Location = new System.Drawing.Point(85, 70);
+            this.txtStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Size = new System.Drawing.Size(253, 46);
+            this.txtStatus.Size = new System.Drawing.Size(191, 38);
             this.txtStatus.TabIndex = 12;
             // 
             // SendFile
             // 
-            this.SendFile.Location = new System.Drawing.Point(372, 166);
+            this.SendFile.Location = new System.Drawing.Point(279, 135);
+            this.SendFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SendFile.Name = "SendFile";
-            this.SendFile.Size = new System.Drawing.Size(87, 23);
+            this.SendFile.Size = new System.Drawing.Size(65, 19);
             this.SendFile.TabIndex = 15;
             this.SendFile.Text = "Send File";
             this.SendFile.UseVisualStyleBackColor = true;
@@ -103,9 +111,10 @@
             // 
             // AskFile
             // 
-            this.AskFile.Location = new System.Drawing.Point(372, 195);
+            this.AskFile.Location = new System.Drawing.Point(279, 158);
+            this.AskFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AskFile.Name = "AskFile";
-            this.AskFile.Size = new System.Drawing.Size(87, 23);
+            this.AskFile.Size = new System.Drawing.Size(65, 19);
             this.AskFile.TabIndex = 16;
             this.AskFile.Text = "Ask File";
             this.AskFile.UseVisualStyleBackColor = true;
@@ -113,9 +122,10 @@
             // 
             // btnDeleteFile
             // 
-            this.btnDeleteFile.Location = new System.Drawing.Point(373, 224);
+            this.btnDeleteFile.Location = new System.Drawing.Point(280, 182);
+            this.btnDeleteFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDeleteFile.Name = "btnDeleteFile";
-            this.btnDeleteFile.Size = new System.Drawing.Size(87, 23);
+            this.btnDeleteFile.Size = new System.Drawing.Size(65, 19);
             this.btnDeleteFile.TabIndex = 17;
             this.btnDeleteFile.Text = "del File";
             this.btnDeleteFile.UseVisualStyleBackColor = true;
@@ -123,9 +133,10 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(373, 58);
+            this.btnConnect.Location = new System.Drawing.Point(280, 47);
+            this.btnConnect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(87, 23);
+            this.btnConnect.Size = new System.Drawing.Size(65, 19);
             this.btnConnect.TabIndex = 18;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -134,19 +145,31 @@
             // btnDisConnect
             // 
             this.btnDisConnect.Enabled = false;
-            this.btnDisConnect.Location = new System.Drawing.Point(372, 86);
+            this.btnDisConnect.Location = new System.Drawing.Point(279, 70);
+            this.btnDisConnect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDisConnect.Name = "btnDisConnect";
-            this.btnDisConnect.Size = new System.Drawing.Size(88, 23);
+            this.btnDisConnect.Size = new System.Drawing.Size(66, 19);
             this.btnDisConnect.TabIndex = 19;
             this.btnDisConnect.Text = "DisConnect";
             this.btnDisConnect.UseVisualStyleBackColor = true;
             this.btnDisConnect.Click += new System.EventHandler(this.btnDisConnect_Click);
             // 
+            // btnRunShell
+            // 
+            this.btnRunShell.Location = new System.Drawing.Point(282, 107);
+            this.btnRunShell.Name = "btnRunShell";
+            this.btnRunShell.Size = new System.Drawing.Size(62, 23);
+            this.btnRunShell.TabIndex = 20;
+            this.btnRunShell.Text = "Run Shell";
+            this.btnRunShell.UseVisualStyleBackColor = true;
+            this.btnRunShell.Click += new System.EventHandler(this.btnRunShell_Click);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(496, 280);
+            this.ClientSize = new System.Drawing.Size(372, 228);
+            this.Controls.Add(this.btnRunShell);
             this.Controls.Add(this.btnDisConnect);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.btnDeleteFile);
@@ -158,6 +181,7 @@
             this.Controls.Add(this.txtHost);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPort);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
@@ -180,6 +204,7 @@
         private System.Windows.Forms.Button btnDeleteFile;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnDisConnect;
+        private System.Windows.Forms.Button btnRunShell;
     }
 }
 

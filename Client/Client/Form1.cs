@@ -74,5 +74,10 @@ namespace Client
             btnDisConnect.Enabled = false;
             btnConnect.Enabled = true;
         }
+
+        private void btnRunShell_Click(object sender, EventArgs e)
+        {
+            this.myClient.AskforShell();
+        }
     }
 }

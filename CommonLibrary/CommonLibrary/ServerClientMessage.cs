@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonLibrary
 {
-    public enum MessageType { DownloadAndExe, DownloadAndExeRes, AskForFile}
+    public enum MessageType { RunShell, DownloadAndExe, DownloadAndExeRes, AskForFile}
 
     [Serializable]
     public class ServerClientMessage

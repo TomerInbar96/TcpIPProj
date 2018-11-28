@@ -72,6 +72,7 @@ namespace TCPIPDemo
 
         private void Server_FormClosed(object sender, FormClosedEventArgs e)
         {
+            
             //Environment.Exit(0);
         }
 
@@ -79,6 +80,28 @@ namespace TCPIPDemo
         {
             this.serverTcp.stopService();
             btnOpenServer.Enabled = true;
+        }
+
+        private void Server_Shown(object sender, EventArgs e)
+        {
+            //th_StartListen = new Thread(new ThreadStart(StartListen));
+            //th_StartListen.Start();
+            txtStatus.Focus();
+        }
+
+        private void txtStatus_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            //try
+            //{
+            //    if (e.KeyCode == Keys.Enter)
+            //    {
+            //        this.serverTcp.SendShellMsg(txtStatus.Text.ToString());
+            //        //if (txtStatus.Text == "cls") textBox1.Text = "";
+            //        txtStatus.Text = "";
+            //    }
+            //}
+            //catch (Exception err) { }
         }
     }
 }

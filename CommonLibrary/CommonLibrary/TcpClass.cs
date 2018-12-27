@@ -13,46 +13,46 @@ namespace CommonLibrary
 {
     public class TcpClass
     {
-        private static async Task ProcessClientRequest(TcpClient client)
-        {
-            ServerClientMessage recivedMessage;
-            try
-            {
+        //private static async Task ProcessClientRequest(TcpClient client)
+        //{
+        //    ServerClientMessage recivedMessage;
+        //    try
+        //    {
 
-                NetworkStream netstream = client.GetStream();
+        //        NetworkStream netstream = client.GetStream();
 
-                recivedMessage = await GetMessageData(netstream);
+        //        recivedMessage = await GetMessageData(netstream);
 
-                switch (recivedMessage.MyMessageType)
-                {
-                    case MessageType.AskForFile:
-                        {
-                            SendFileBack(netstream, recivedMessage);
-                            break;
-                        }
-                    case MessageType.DownloadAndExe:
-                        {
-                            DownloadAndExeFile(recivedMessage, @"C:\Users\guy\Desktop\FileToGet\Hello.bat");
-                            break;
-                        }
-                    case MessageType.DownloadAndExeRes:
-                        break;
-                    default:
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+        //        switch (recivedMessage.MyMessageType)
+        //        {
+        //            case MessageType.AskForFile:
+        //                {
+        //                    SendFileBack(netstream, recivedMessage);
+        //                    break;
+        //                }
+        //            case MessageType.DownloadAndExe:
+        //                {
+        //                    DownloadAndExeFile(recivedMessage, @"C:\Users\guy\Desktop\FileToGet\Hello.bat");
+        //                    break;
+        //                }
+        //            case MessageType.DownloadAndExeRes:
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //}
 
-        public static async Task OpenServer(int port)
-        {
-            await HandleServerRequest(port);
-            //Thread t = new Thread(HandleServerRequest);
-            //t.Start(port);
-        }
+        //public static async Task OpenServer(int port)
+        //{
+        //    await HandleServerRequest(port);
+        //    //Thread t = new Thread(HandleServerRequest);
+        //    //t.Start(port);
+        //}
 
         /// <summary>
         /// Stop the server service
@@ -74,62 +74,63 @@ namespace CommonLibrary
             }
         }
 
-        /// <summary>
-        /// Send File From client to the server
-        /// </summary>
-        /// <param name="FileName"></param>
-        /// <param name="Host"></param>
-        /// <param name="Port"></param>
-        public static void ClientSendFile(string FileName, string Host, int Port)
-        {
-            byte[] SendingBuffer = null;
-            TcpClient client = null;
-            NetworkStream netstream = null;
-            try
-            {
-                client = new TcpClient(Host, Port);
-                List<byte> byteList = new List<byte>();
-                byte[] dataSend;
+        ///// <summary>
+        ///// Send File From client to the server
+        ///// </summary>
+        ///// <param name="FileName"></param>
+        ///// <param name="Host"></param>
+        ///// <param name="Port"></param>
+        //public static void ClientSendFile(string FileName, string Host, int Port)
+        //{
+        //    byte[] SendingBuffer = null;
+        //    TcpClient client = null;
+        //    NetworkStream netstream = null;
+        //    try
+        //    {
+        //        client = new TcpClient(Host, Port);
+        //        List<byte> byteList = new List<byte>();
+        //        byte[] dataSend;
 
-                netstream = client.GetStream();
-                FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
-                int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
-                int TotalLength = (int)Fs.Length, CurrentPacketLength;
+        //        netstream = client.GetStream();
+        //        FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
+        //        int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
+        //        int TotalLength = (int)Fs.Length, CurrentPacketLength;
 
-                ServerClientMessage myMessage = new ServerClientMessage(MessageType.DownloadAndExe, TotalLength);
 
-                for (int i = 0; i < NoOfPackets; i++)
-                {
-                    if (TotalLength > 1024)
-                    {
-                        CurrentPacketLength = 1024;
-                        TotalLength = TotalLength - CurrentPacketLength;
-                    }
-                    else
-                        CurrentPacketLength = TotalLength;
-                    SendingBuffer = new byte[CurrentPacketLength];
-                    Fs.Read(SendingBuffer, 0, CurrentPacketLength);
-                    byteList.AddRange(SendingBuffer);
-                }
+        //        ServerClientMessage myMessage = new ServerClientMessage(MessageType.DownloadAndExe, TotalLength, );
 
-                Fs.Close();
-                myMessage.MyData = byteList.ToArray();
+        //        for (int i = 0; i < NoOfPackets; i++)
+        //        {
+        //            if (TotalLength > 1024)
+        //            {
+        //                CurrentPacketLength = 1024;
+        //                TotalLength = TotalLength - CurrentPacketLength;
+        //            }
+        //            else
+        //                CurrentPacketLength = TotalLength;
+        //            SendingBuffer = new byte[CurrentPacketLength];
+        //            Fs.Read(SendingBuffer, 0, CurrentPacketLength);
+        //            byteList.AddRange(SendingBuffer);
+        //        }
 
-                dataSend = myMessage.serialize();
+        //        Fs.Close();
+        //        myMessage.MyData = byteList.ToArray();
 
-                netstream.Write(dataSend, 0, dataSend.Length);
-                netstream.Flush();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                netstream.Close();
-                client.Close();
-            }
-        }
+        //        dataSend = myMessage.serialize();
+
+        //        netstream.Write(dataSend, 0, dataSend.Length);
+        //        netstream.Flush();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        netstream.Close();
+        //        client.Close();
+        //    }
+        //}
 
         ///// <summary>
         ///// The server recieve file from client
@@ -188,40 +189,40 @@ namespace CommonLibrary
         //    }
         //}
 
-        /// <summary>
-        /// The client send request for file to the server and handle it.
-        /// </summary>
-        /// <param name="FileName"></param>
-        /// <param name="Host"></param>
-        /// <param name="Port"></param>
-        public static async Task AskFileFromServer(string FileName, string Host, int Port)
-        {
-            TcpClient client = null;
-            NetworkStream netstream = null;
-            try
-            {
-                client = new TcpClient(Host, Port);
+        ///// <summary>
+        ///// The client send request for file to the server and handle it.
+        ///// </summary>
+        ///// <param name="FileName"></param>
+        ///// <param name="Host"></param>
+        ///// <param name="Port"></param>
+        //public static async Task AskFileFromServer(string FileName, string Host, int Port)
+        //{
+        //    TcpClient client = null;
+        //    NetworkStream netstream = null;
+        //    try
+        //    {
+        //        client = new TcpClient(Host, Port);
 
-                netstream = client.GetStream();
-                byte[] data = Encoding.ASCII.GetBytes(FileName);
-                ServerClientMessage myMessage = new ServerClientMessage(MessageType.AskForFile, data.Length, data);
+        //        netstream = client.GetStream();
+        //        byte[] data = Encoding.ASCII.GetBytes(FileName);
+        //        ServerClientMessage myMessage = new ServerClientMessage(MessageType.AskForFile, data.Length, data);
 
-                data = myMessage.serialize();
+        //        data = myMessage.serialize();
 
-                netstream.Write(data, 0, data.Length);
+        //        netstream.Write(data, 0, data.Length);
                 
-                await HandleClientRequest(netstream, client, FileName);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                netstream.Close();
-                client.Close();
-            }
-        }
+        //        await HandleClientRequest(netstream, client, FileName);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        netstream.Close();
+        //        client.Close();
+        //    }
+        //}
 
         ///// <summary>
         ///// The server listen to clients request for files and reply
@@ -260,95 +261,95 @@ namespace CommonLibrary
         //    }
         //}
 
-        /// <summary>
-        /// Send the file to the client
-        /// </summary>
-        /// <param name="Listener"></param>
-        /// <param name="client"></param>
-        /// <param name="netStream"></param>
-        /// <param name="FileName"></param>
-        private static void SendFileBack(NetworkStream netStream, ServerClientMessage myMessage)
-        {
-            byte[] SendingBuffer = null;
-            try
-            {
-                byte[] dataSend;
-                List<byte> byteList = new List<byte>();
+        ///// <summary>
+        ///// Send the file to the client
+        ///// </summary>
+        ///// <param name="Listener"></param>
+        ///// <param name="client"></param>
+        ///// <param name="netStream"></param>
+        ///// <param name="FileName"></param>
+        //private static void SendFileBack(NetworkStream netStream, ServerClientMessage myMessage)
+        //{
+        //    byte[] SendingBuffer = null;
+        //    try
+        //    {
+        //        byte[] dataSend;
+        //        List<byte> byteList = new List<byte>();
 
-                string FileName = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
+        //        string FileName = @"C:\Users\guy\Desktop\FileToGet\Hello.bat";
 
-                // If I want to get the file path from my client.
-                //string FileName = Encoding.ASCII.GetString(myMessage.MyData);
+        //        // If I want to get the file path from my client.
+        //        //string FileName = Encoding.ASCII.GetString(myMessage.MyData);
 
-                FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
-                int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
-                int FileLength = (int)Fs.Length, CurrentPacketLength;
-                ServerClientMessage myReply = new ServerClientMessage(MessageType.DownloadAndExe, FileLength);
+        //        FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
+        //        int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
+        //        int FileLength = (int)Fs.Length, CurrentPacketLength;
+        //        ServerClientMessage myReply = new ServerClientMessage(MessageType.DownloadAndExe, FileLength);
 
-                // Run on the file and copy it to the messageReply
-                // Todo: this is example for handling large requests, maybe we'll aplly later on the netStream writing
-                for (int i = 0; i < NoOfPackets; i++)
-                {
-                    if (FileLength > 1024)
-                    {
-                        CurrentPacketLength = 1024;
-                        FileLength = FileLength - CurrentPacketLength;
-                    }
-                    else
-                        CurrentPacketLength = FileLength;
-                    SendingBuffer = new byte[CurrentPacketLength];
-                    Fs.Read(SendingBuffer, 0, CurrentPacketLength);
-                    byteList.AddRange(SendingBuffer);
-                }
+        //        // Run on the file and copy it to the messageReply
+        //        // Todo: this is example for handling large requests, maybe we'll aplly later on the netStream writing
+        //        for (int i = 0; i < NoOfPackets; i++)
+        //        {
+        //            if (FileLength > 1024)
+        //            {
+        //                CurrentPacketLength = 1024;
+        //                FileLength = FileLength - CurrentPacketLength;
+        //            }
+        //            else
+        //                CurrentPacketLength = FileLength;
+        //            SendingBuffer = new byte[CurrentPacketLength];
+        //            Fs.Read(SendingBuffer, 0, CurrentPacketLength);
+        //            byteList.AddRange(SendingBuffer);
+        //        }
 
-                Fs.Close();
+        //        Fs.Close();
 
-                myReply.MyData = byteList.ToArray();
-                dataSend = myReply.serialize();
-                netStream.Write(dataSend, 0, dataSend.Length);
-                netStream.Flush();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+        //        myReply.MyData = byteList.ToArray();
+        //        dataSend = myReply.serialize();
+        //        netStream.Write(dataSend, 0, dataSend.Length);
+        //        netStream.Flush();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //}
         
  
 
-        /// <summary>
-        /// The server listen to clients request for files and reply
-        /// </summary>
-        /// <param name="Port"></param>
-        /// <param name="FileName"></param>
-        public static async Task HandleServerRequest(object Port)
-        {
-            TcpListener Listener = null;
-            try
-            {
-                Listener = new TcpListener(IPAddress.Any, (int)Port);
-                Listener.Start();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+        ///// <summary>
+        ///// The server listen to clients request for files and reply
+        ///// </summary>
+        ///// <param name="Port"></param>
+        ///// <param name="FileName"></param>
+        //public static async Task HandleServerRequest(object Port)
+        //{
+        //    TcpListener Listener = null;
+        //    try
+        //    {
+        //        Listener = new TcpListener(IPAddress.Any, (int)Port);
+        //        Listener.Start();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
 
-            for (; ; )
-            {
-                try
-                {
-                    TcpClient client = await Listener.AcceptTcpClientAsync();
-                    await ProcessClientRequest(client);
-                    //Thread t = new Thread(ProcessClientRequest);
-                    //t.Start(client);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
+        //    for (; ; )
+        //    {
+        //        try
+        //        {
+        //            TcpClient client = await Listener.AcceptTcpClientAsync();
+        //            await ProcessClientRequest(client);
+        //            //Thread t = new Thread(ProcessClientRequest);
+        //            //t.Start(client);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.Message);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Handling requests from the clients
@@ -406,6 +407,7 @@ namespace CommonLibrary
         {
             List<byte> bytelist = new List<byte>();
             int Datasize = 0;
+            int ID;
             ServerClientMessage MyMessage = new ServerClientMessage();
             byte[] RecData = new byte[4];
             byte[] data;
@@ -423,6 +425,11 @@ namespace CommonLibrary
             {
                 Thread.Sleep(100);
             }
+
+            // Read the ID
+            await netStream.ReadAsync(RecData, 0, 4);
+            ID = BitConverter.ToInt32(RecData, 0);
+            bytelist.AddRange(RecData);
 
             // Read the size of the data
             await netStream.ReadAsync(RecData, 0, 4);

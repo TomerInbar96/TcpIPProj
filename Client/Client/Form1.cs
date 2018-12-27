@@ -66,6 +66,7 @@ namespace Client
             btnDisConnect.Enabled = true;
             btnConnect.Enabled = false;
             await this.myClient.Connect(txtHost.Text, Convert.ToInt32(txtPort.Text));
+            this.txtID.Text = this.myClient.myID.ToString();
         }
 
         private void btnDisConnect_Click(object sender, EventArgs e)
@@ -78,6 +79,11 @@ namespace Client
         private void btnRunShell_Click(object sender, EventArgs e)
         {
             this.myClient.AskforShell();
+        }
+
+        private void txtID_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

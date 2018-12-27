@@ -14,14 +14,26 @@ namespace ServerLibrary
 {
     public class ServerTcp
     {
+        private readonly object _lock = new object();
+        private int Count;
+        private int _serverID;
         private TcpListener _listener;
         private CancellationTokenSource _token;
-        Socket socketForServer;
-        NetworkStream networkStream;
-        StreamWriter streamWriter;
-        StreamReader streamReader;
-        StringBuilder strInput;
+        private Dictionary<int, NetworkStream> clients;
+        private readonly ManualResetEvent mre = new ManualResetEvent(false);
         //Thread th_StartListen, th_RunClient;
+
+        private int serverID
+        {
+            get
+            {
+                return this._serverID;
+            }
+            set
+            {
+                this._serverID = value;
+            }
+        }
 
         private TcpListener Listener
         {
@@ -59,6 +71,9 @@ namespace ServerLibrary
         {
             this.Listener = null;
             this.cToken = null;
+            this.clients = new Dictionary<int, NetworkStream>();
+            this.serverID = -1;
+            this.Count = 1;
         }
 
         /// <summary>
@@ -100,6 +115,7 @@ namespace ServerLibrary
             {
                 try
                 {
+                    //Listener.BeginAcceptTcpClient(this.OnClientConnect, Listener);
                     TcpClient client = await Task.Run(() => Listener.AcceptTcpClientAsync(), cToken.Token);
                     Task.Run(() => ProcessClientRequest(client), cToken.Token);
                 }
@@ -130,6 +146,11 @@ namespace ServerLibrary
                     {
                         switch (recivedMessage.MyMessageType)
                         {
+                            case MessageType.askClientID:
+                                {
+                                    await CreateNewID(netstream);
+                                    break;
+                                }
                             case MessageType.AskForFile:
                                 {
                                     SendFileBack(netstream, recivedMessage);
@@ -161,6 +182,19 @@ namespace ServerLibrary
             }
         }
 
+        private async Task CreateNewID(NetworkStream netstream)
+        {
+            lock (_lock)
+            {
+                this.clients.Add(this.Count, netstream);
+                ServerClientMessage myReply = new ServerClientMessage(MessageType.GetClientID, 0, this.Count);
+                this.Count++;
+                byte[] dataSend = myReply.serialize();
+                netstream.Write(dataSend, 0, dataSend.Length);
+                netstream.Flush();
+            }
+        }
+
         /// <summary>
         /// Send file back to the server
         /// </summary>
@@ -182,7 +216,7 @@ namespace ServerLibrary
                 FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
                 int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(1024)));
                 int FileLength = (int)Fs.Length, CurrentPacketLength;
-                ServerClientMessage myReply = new ServerClientMessage(MessageType.DownloadAndExe, FileLength);
+                ServerClientMessage myReply = new ServerClientMessage(MessageType.DownloadAndExe, FileLength, this.serverID);
 
                 // Run on the file and copy it to the messageReply
                 // Todo: this is example for handling large requests, maybe we'll aplly later on the netStream writing
@@ -226,7 +260,7 @@ namespace ServerLibrary
                 byte[] dataSend;
                 List<byte> byteList = new List<byte>();
 
-                ServerClientMessage myReply = new ServerClientMessage(MessageType.RunShell, 0, new byte[0]);
+                ServerClientMessage myReply = new ServerClientMessage(MessageType.RunShell, 0, new byte[0], this.serverID);
                 
                 dataSend = myReply.serialize();
                 await netStream.WriteAsync(dataSend, 0, dataSend.Length);
